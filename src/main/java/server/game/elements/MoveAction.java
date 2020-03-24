@@ -5,37 +5,37 @@ import java.awt.Point;
 public class MoveAction implements Action {
 
 	public void doAction(Tank tank) {
-		move(tank.getLocation());
+		move(tank);
 		System.out.println(tank.getName() + " moved to " + tank.getLocation().x + tank.getLocation().y);
 	}
 
-	private void move(Point location) {
+	private void move(Tank tank) {
 
 		int direction = (int) (Math.random()*9);
 		switch (direction) {
 		case 0:
-			moveNorthWest(location);
+			moveNorthWest(tank);
 			break;
 		case 1:
-			moveNorth(location);
+			moveNorth(tank);
 			break;
 		case 2:
-			moveNorthEast(location);
+			moveNorthEast(tank);
 			break;
 		case 3:
-			moveEast(location);
+			moveEast(tank);
 			break;
 		case 4:
-			moveSouthEast(location);
+			moveSouthEast(tank);
 			break;
 		case 5:
-			moveSouth(location);
+			moveSouth(tank);
 			break;
 		case 6:
-			moveSouthWest(location);
+			moveSouthWest(tank);
 			break;
 		case 7:
-			moveWest(location);
+			moveWest(tank);
 			break;
 		case 8:
 			idle();
@@ -46,56 +46,60 @@ public class MoveAction implements Action {
 		}
 	}
 	
-	private void moveNorth(Point location) {
-		if(location.y == 2) {
+	private void moveNorth(Tank tank) {
+		if(tank.getLocation().y == 2) {
 			return;
 		}
-		location.y++;
+		tank.getLocation().y++;
+		tank.getAim().y++;
 		System.out.println("Moving north");
 	}
 	
-	private void moveSouth(Point location) {
-		if(location.y == -2) {
+	private void moveSouth(Tank tank) {
+		if(tank.getLocation().y == -2) {
 			return;
 		}
-		location.y--;
+		tank.getLocation().y--;
+		tank.getAim().y--;
 		System.out.println("Moving south");
 	}
 	
-	private void moveEast(Point location) {
-		if(location.x ==2) {
+	private void moveEast(Tank tank) {
+		if(tank.getLocation().x ==2) {
 			return;
 		}
-		location.x++;
-		System.out.println("Moving est");
+		tank.getLocation().x++;
+		tank.getAim().x++;
+		System.out.println("Moving east");
 	}
 	
-	private void moveWest(Point location) {
-		if(location.x == -2) {
+	private void moveWest(Tank tank) {
+		if(tank.getLocation().x == -2) {
 			return;
 		}
-		location.x--;
+		tank.getLocation().x--;
+		tank.getAim().x--;
 		System.out.println("Moving west");
 	}
 	
-	private void moveNorthWest(Point location) {
-		moveNorth(location);
-		moveWest(location);
+	private void moveNorthWest(Tank tank) {
+		moveNorth(tank);
+		moveWest(tank);
 	}
 	
-	private void moveNorthEast(Point location) {
-		moveNorth(location);
-		moveEast(location);
+	private void moveNorthEast(Tank tank) {
+		moveNorth(tank);
+		moveEast(tank);
 	}
 	
-	private void moveSouthWest(Point location) {
-		moveSouth(location);
-		moveWest(location);
+	private void moveSouthWest(Tank tank) {
+		moveSouth(tank);
+		moveWest(tank);
 	}
 	
-	private void moveSouthEast(Point location) {
-		moveSouth(location);
-		moveEast(location);
+	private void moveSouthEast(Tank tank) {
+		moveSouth(tank);
+		moveEast(tank);
 	}
 	
 	private void idle() {
