@@ -7,6 +7,12 @@ import javax.annotation.ManagedBean;
 
 import org.springframework.web.context.annotation.RequestScope;
 
+/**
+ * The game engine. The engine will take the tanks and start the battle.
+ * Each tank is a clone of the tank in the cache, so multiple battles can take place with the same tanks.
+ * @author stef
+ *
+ */
 @RequestScope
 @ManagedBean
 public class GameEngine {
@@ -18,8 +24,15 @@ public class GameEngine {
 		System.out.println("Prepping game");
 		Instant starttime = Instant.now();
 
-		Tank tank1 = tankCache.getTank(id1);
-		Tank tank2 = tankCache.getTank(id2);
+		Tank tank1 = null;
+		Tank tank2 = null;
+		try {
+			tank1 = (Tank) tankCache.getTank(id1).clone();
+			tank2 = (Tank) tankCache.getTank(id2).clone();
+		} catch (CloneNotSupportedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		tank1.setOtherTank(tank2);
 		tank2.setOtherTank(tank1);
@@ -33,18 +46,23 @@ public class GameEngine {
 		tank1.receiveTurn(1);
 
 		try {
-			Thread.sleep(1000);
-
 			thread1.join();
 			thread2.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
+		
 		Instant endDateTime = Instant.now();
-		return "The game lasted "
-				+ Duration.between(starttime, endDateTime).toMillis()
-				+ " milisecons!";
+		
+		StringBuilder response = new StringBuilder();
+		response.append(tank1.getGameResult())
+			.append("\n")
+			.append(tank2.getGameResult())
+			.append("\n")
+			.append("The game lasted " + Duration.between(starttime, endDateTime).toMillis() + " milisecons!");
+		
+		
+		return response.toString();
 	}
 
 }

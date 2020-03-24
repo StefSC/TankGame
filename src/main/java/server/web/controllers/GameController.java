@@ -13,6 +13,12 @@ public class GameController {
 	@Autowired
 	private GameEngine gameEngine;
 	
+	/**
+	 * Endpoint for starting the game between tank with id1 and tank with id2
+	 * @param id1
+	 * @param id2
+	 * @return
+	 */
 	@GetMapping("/game/start/{id1}vs{id2}")
 	public String startGame(@PathVariable(value = "id1") int id1, @PathVariable(value = "id2") int id2) {
 		//TODO make tanks different threads that start their actions

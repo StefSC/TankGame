@@ -1,7 +1,10 @@
 package server.game.elements;
 
-import java.awt.Point;
-
+/**
+ * Class for defining a weapon.
+ * @author stef
+ *
+ */
 public class Weapon {
 	
 	private String name;
@@ -36,10 +39,6 @@ public class Weapon {
 
 	public void setRange(float range) {
 		this.range = range;
-	}
-	
-	public void shoot(Point point) {
-		System.out.println(this.name + " shooting towards " + point.x + point.y);
 	}
 	
 }

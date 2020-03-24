@@ -4,6 +4,11 @@ import java.util.HashMap;
 
 import org.springframework.web.context.annotation.ApplicationScope;
 
+/**
+ * A cache for storing the tanks - new or loaded.
+ * @author stef
+ *
+ */
 @ApplicationScope
 public class TankCache {
 	

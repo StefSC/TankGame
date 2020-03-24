@@ -2,6 +2,11 @@ package server.game.elements;
 
 import java.util.ArrayList;
 
+/**
+ * Tank shoot action. When the tank shoots, the bullet will be in a new thread.
+ * @author stef
+ *
+ */
 public class ShootAction implements Action {
 
 	private Tank target;
@@ -14,6 +19,10 @@ public class ShootAction implements Action {
 		shoot(tank);
 	}
 
+	/**
+	 * Start the thread(s) of the shot bullets.
+	 * @param tank
+	 */
 	private void shoot(Tank tank) {
 		ArrayList<Thread>bullets = new ArrayList<>(tank.getWeapons().size());
 		for (Weapon weapon : tank.getWeapons()) {

@@ -1,7 +1,10 @@
 package server.game.elements;
 
-import java.awt.Point;
-
+/**
+ * Tank move action. This action will change the location of the tank.
+ * @author stef
+ *
+ */
 public class MoveAction implements Action {
 
 	public void doAction(Tank tank) {

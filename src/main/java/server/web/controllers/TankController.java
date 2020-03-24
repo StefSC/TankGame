@@ -10,12 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 import server.game.elements.Tank;
 import server.game.elements.TankCache;
 
+/**
+ * @author stef
+ *
+ */
 @RestController()
 public class TankController {
 	
 	private TankCache tankCache = TankCache.getTankCache();
 	private final AtomicInteger counter = new AtomicInteger();
 	
+	/**
+	 * Endpoint for creating a new tank
+	 * @param id
+	 * @param health
+	 * @return
+	 */
 	@GetMapping("/tank/new")
 	public Tank getNewTank(@RequestParam(value = "id", defaultValue = "1") String id,
 			@RequestParam(value = "health", defaultValue = "100") int health) {
@@ -23,6 +33,12 @@ public class TankController {
 		return tankCache.getTank(counter.get());
 	}
 	
+	
+	/**
+	 * Endpoint for getting the tank with id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/tank/{id}")
 	public Tank getTank(@PathVariable(value = "id") int id) {
 		return this.tankCache.getTank(id);

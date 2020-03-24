@@ -7,7 +7,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author sstef
- *
+ * Tank class. After the game is started, this class will run in a separate thread.
+ * The "AI" of the tank is represented by the run command. The "AI" decides what actions the tank should do.
+ * The actions executed by the tank are stored in the actionsHistory field. (Wanted to store them in mongo
+ * and create a service for retrieval).
+ * A tank can do an actions if the turnQueue has the value 1.
+ * If the turnQueue has value 0 it means that the tank was destroyed.
+ * A value of 2 means that the other tank was eliminated.
+ * 
  */
 public class Tank implements Runnable {
 
@@ -19,6 +26,7 @@ public class Tank implements Runnable {
 	private boolean targetSpotted = false;
 	private float health;
 	private ArrayList<Action> actionsHistory;
+	private String gameResult;
 
 	// If in the queue we have 0 it means we lost
 	// If in the queue we have 1 it means we continue
@@ -85,6 +93,10 @@ public class Tank implements Runnable {
 		this.actionsHistory.add(action);
 		action.doAction(this);
 	}
+	
+	public String getGameResult() {
+		return this.gameResult;
+	}
 
 	public void receiveTurn(Integer won) {
 		this.turnQueue.add(won);
@@ -115,7 +127,10 @@ public class Tank implements Runnable {
 					this.otherTank.receiveTurn(1);
 				} else {
 					if (won == 2) {
+						this.gameResult = "Tank " + this.name + "won in " + this.actionsHistory.size() + " turns!";
 						System.out.println("Tank " + this.name + " won in "+ this.actionsHistory.size() +" turns!");
+					} else if (won == 0) {
+						this.gameResult = "Tank " + this.name + " lost";
 					}
 					break;
 				}
@@ -131,7 +146,7 @@ public class Tank implements Runnable {
 	public void getHit(float damage) {
 		if (this.health > 0) {
 			this.health = this.health - damage;
-			System.out.println("Tank " + this.name + "got hit and has "
+			System.out.println("Tank " + this.name + " got hit and has "
 					+ this.health + " left!");
 			if (this.health <= 0) {
 				// clear the other tanks actions and tell it that it won
@@ -141,4 +156,16 @@ public class Tank implements Runnable {
 			}
 		}
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Tank clone = new Tank(getId(), getName(), (int)this.health);
+		clone.weapons = this.weapons;
+		clone.location = (Point) this.location.clone();
+		clone.aim = (Point) this.aim.clone();
+		return clone;
+	}
+	
+	
+	
 }
